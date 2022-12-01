@@ -5,16 +5,16 @@ import scala.io.Source
 
 object Top3Calories extends App {
 
-  def readFromFile(): List[List[Int]] = {
-    val listBuffer = ListBuffer[List[Int]]()
+  def readFromFile(): List[Int] = {
+    val listBuffer = ListBuffer[Int]()
     val bufferedSource = Source.fromFile("src/main/scala/advent2022/day1/input.txt")
-    var elfBuffer: ListBuffer[Int] = ListBuffer[Int]()
+    var calorieCount = 0
     for (line <- bufferedSource.getLines) {
       line match
         case "" =>
-          listBuffer += elfBuffer.toList
-          elfBuffer = ListBuffer[Int]()
-        case _ => elfBuffer += line.toInt
+          listBuffer += calorieCount
+          calorieCount = 0
+        case str: String => calorieCount += str.toInt
     }
     bufferedSource.close()
     val list = listBuffer.toList
@@ -22,7 +22,7 @@ object Top3Calories extends App {
   }
 
   val listOfListOfCalories = readFromFile()
-  val sortedListOfCalories = listOfListOfCalories.map(list => list.sum).sorted(Ordering.Int.reverse)
+  val sortedListOfCalories = listOfListOfCalories.sorted(Ordering.Int.reverse)
   println(sortedListOfCalories.head)
   println(sortedListOfCalories(0) + sortedListOfCalories(1) +sortedListOfCalories(2))
 
